@@ -11,6 +11,7 @@ from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+app.secret_key = 'dev'
 
 bootstrap = Bootstrap(app)
 
