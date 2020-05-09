@@ -85,8 +85,20 @@ def test_nav():
     return render_template('nav.html')
 
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = HelloForm
+    return render_template('form.html', form=form, telephone_form=TelephoneForm(), contact_form=ContactForm(), im_form=IMForm(), button_form=ButtonForm(), example_form=ExampleForm())
 
 
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    return render_template('logout.html')
+
+
+@app.route('/register')
+def register():
+    return render_template('register.html')
 
 
 

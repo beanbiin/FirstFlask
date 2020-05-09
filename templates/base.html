@@ -5,9 +5,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Bootstrap-Flask Demo Application</title>
+    <title>Devornica</title>
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
     {{ bootstrap.load_css() }}
+    <style type="text/css">
+        ol, ul{list-style-type: none;}
+    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
@@ -17,14 +20,25 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                {{ render_nav_item('index', 'Home', use_li=True) }}
-                {{ render_nav_item('test_form', 'Form', use_li=True) }}
-                {{ render_nav_item('test_nav', 'Nav', use_li=True) }}
+                {{ render_nav_item('index', '回首頁', use_li=True) }}
+                {{ render_nav_item('test_form', '表格', use_li=True) }}
+                {{ render_nav_item('test_nav', '導航欄', use_li=True) }}
+            </ul>
+            <ul class="nav justify-content-end">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('register') }}">加入會員</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('login') }}">登入</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('logout') }}">登出</a>
+                </li>
             </ul>
         </div>
         <form class="form-inline">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">搜尋</button>
         </form>
     </nav>
     
@@ -34,8 +48,8 @@
     </main>
 
     <footer class="text-center">
-        {% block footer %}
-            <small> &copy; 2018 <a href="http://greyli.com" title="Written by Grey Li">Grey Li</a>
+        {% block footer %}   
+            <small> &copy; 2020<a title="Written by Group Diamond">, Group Diamond</a>
             </small>
         {% endblock %}
     </footer>

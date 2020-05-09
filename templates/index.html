@@ -2,8 +2,21 @@
 
 {% block content %}
     <h1>Devornica</h1>
-<ul>
-    <li><a href="{{ url_for('test_form') }}">Form</a></li>
-    <li><a href="{{ url_for('test_nav') }}">Nav</a></li>
-</ul>
+
+    <div class="row align-items-end">
+        <div class="col-3">
+            <ul></ul>
+        </div>
+        <div class="col-4">
+            <ul>
+                <li><a href="{{ url_for('test_form') }}">關於我們</a></li>
+            </ul>
+        </div>
+        <div class="col">
+            <ul>
+                <li><a href="{{ url_for('test_form') }}">相關網頁</a></li>
+            </ul>
+        </div>
+    </div>
+
 {% endblock %}
