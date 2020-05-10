@@ -10,49 +10,70 @@
     {{ bootstrap.load_css() }}
     <style type="text/css">
         ol, ul{list-style-type: none;}
+        #divb1
+        {
+            width: 100%;
+            height: 100px;
+        }
+        #divb2
+        {
+            width: 100%;
+            height: 400px;
+        }
+        #divb3
+        {
+            width: 100%;
+            height: 300px;
+        }
+        #divb4
+        {
+            width: 100%;
+            height: 120px;
+        }
+        #div1{background-color: #87f5a8;}
+        #div2{background-color: #0a0a0a;}
+        #ulclr1{color: whitesmoke}
+        #ulclr2{color: gray}
+        #ulclr3{color: rgb(177, 164, 164)}
+        #picback
+        {
+            widows: 170px;
+            height: 170px;
+            background-image: url(/static/images/heartbreak.png);
+        }
+
+
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-0">
+        <a class="navbar-brand" href="#">
+            <img src="{{ url_for('static', filename='images/hammer.png') }}" width="36" height="36" class="d-inline-block align-top" alt="">
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                {{ render_nav_item('index', '回首頁', use_li=True) }}
-                {{ render_nav_item('test_form', '表格', use_li=True) }}
-                {{ render_nav_item('test_nav', '導航欄', use_li=True) }}
+                {{ render_nav_item('index', '首頁', use_li=True) }}
             </ul>
-            <ul class="nav justify-content-end">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('register') }}">加入會員</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('login') }}">登入</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('logout') }}">登出</a>
-                </li>
+            <ul class="nav justify-content-end" id="">
+                {{ render_nav_item('index', '加入會員', use_li=True) }}
+                {{ render_nav_item('test_form', '登入', use_li=True) }}
+                {{ render_nav_item('test_nav', '登出', use_li=True) }}
             </ul>
         </div>
-        <form class="form-inline">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <form class="form-inline" method="post" action={{ url_for('search') }}>
+            <input class="form-control mr-sm-2" type="search" placeholder="請輸入關鍵字" aria-label="Search">
             <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">搜尋</button>
         </form>
     </nav>
     
-    <main class="container">
+    <main>
         {{ render_messages(container=False, dismissible=True) }}
         {% block content %}{% endblock %}
     </main>
-
-    <footer class="text-center">
-        {% block footer %}   
-            <small> &copy; 2020<a title="Written by Group Diamond">, Group Diamond</a>
-            </small>
-        {% endblock %}
-    </footer>
 
     {{ bootstrap.load_js() }}
 </body>

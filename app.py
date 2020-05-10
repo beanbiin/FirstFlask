@@ -6,68 +6,23 @@ from wtforms import StringField, SubmitField, BooleanField, PasswordField, Integ
     FormField, SelectField, FieldList
 from wtforms.validators import DataRequired, Length
 from wtforms.fields import *
-
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
+from elasticsearch import Elasticsearch
 
 app = Flask(__name__)
-app.secret_key = 'dev'
+
+
+app.config.update(
+    DEBUG=True,
+    SQLALCHEMY_DATABASE_URI='sqlite:///:memory:',
+    SECRET_KEY='James Bond',
+    SECURITY_REGISTERABLE=True,
+)
 
 bootstrap = Bootstrap(app)
 
-
-
-class ExampleForm(FlaskForm):
-    """An example form that contains all the supported bootstrap style form fields."""
-    date = DateField(description="We'll never share your email with anyone else.")  # add help text with `description`
-    datetime = DateTimeField(render_kw={'placeholder': 'this is placeholder'})  # add HTML attribute with `render_kw`
-    image = FileField(render_kw={'class': 'my-class'})  # add your class
-    option = RadioField(choices=[('dog', 'Dog'), ('cat', 'Cat'), ('bird', 'Bird'), ('alien', 'Alien')])
-    select = SelectField(choices=[('dog', 'Dog'), ('cat', 'Cat'), ('bird', 'Bird'), ('alien', 'Alien')])
-    selectmulti = SelectMultipleField(choices=[('dog', 'Dog'), ('cat', 'Cat'), ('bird', 'Bird'), ('alien', 'Alien')])
-    bio = TextAreaField()
-    title = StringField()
-    secret = PasswordField()
-    remember = BooleanField('Remember me')
-    submit = SubmitField()
-
-
-class HelloForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired(), Length(1, 20)])
-    password = PasswordField('Password', validators=[DataRequired(), Length(8, 150)])
-    remember = BooleanField('Remember me')
-    submit = SubmitField()
-
-
-class ButtonForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired(), Length(1, 20)])
-    submit = SubmitField()
-    delete = SubmitField()
-    cancel = SubmitField()
-
-
-class TelephoneForm(FlaskForm):
-    country_code = IntegerField('Country Code')
-    area_code = IntegerField('Area Code/Exchange')
-    number = TextField('Number')
-
-
-class IMForm(FlaskForm):
-    protocol = SelectField(choices=[('aim', 'AIM'), ('msn', 'MSN')])
-    username = TextField()
-
-
-class ContactForm(FlaskForm):
-    first_name = TextField()
-    last_name = TextField()
-    mobile_phone = FormField(TelephoneForm)
-    office_phone = FormField(TelephoneForm)
-    emails = FieldList(TextField("Email"), min_entries=3)
-    im_accounts = FieldList(FormField(IMForm), min_entries=2)
-
-
-
-
+es = Elasticsearch('192.168.234.134:9200')
 
 @app.route('/')
 def index():
@@ -88,7 +43,7 @@ def test_nav():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = HelloForm
-    return render_template('form.html', form=form, telephone_form=TelephoneForm(), contact_form=ContactForm(), im_form=IMForm(), button_form=ButtonForm(), example_form=ExampleForm())
+    return render_template('login.html', form=form)
 
 
 @app.route('/logout', methods=['GET', 'POST'])
@@ -99,6 +54,41 @@ def logout():
 @app.route('/register')
 def register():
     return render_template('register.html')
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    if request.method == 'POST':
+        return redirect(url_for('search_result', keywords=request.values['keyword']))
+    return render_template('search.html')
+
+
+@app.route('/search/search_result/<keywords>')
+def search_result(keywords):
+    data = {'query': {'match': {'judge_content': keywords}}}
+    results = es.search(index='judicial_test', body=data)['hits']['hits'][0:3]
+    # return jsonify(results)
+    return render_template('search_result.html', results=results)
+
+
+@app.route('/win_lose')
+def win_lose():
+    return render_template('win_lose.html')
+
+
+@app.route('/statistic_keywords')
+def statistic_keywords():
+    return render_template('statistic_keywords.html')
+
+
+@app.route('/statistic_laws')
+def statistic_laws():
+    return render_template('statistic_laws.html')
+
+
+@app.route('/statistic_locations')
+def statistic_locations():
+    return render_template('statistic_location.html')
+
 
 
 
